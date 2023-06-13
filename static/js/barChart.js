@@ -39,18 +39,18 @@ d3.json("resources/output.json").then(function(data) {
     var trace = {
       x: xValues,
       y: yValues,
-      type: 'bar',
+      type: "bar",
       text: hoverText,  
-      hovertemplate: '%{text}',  
+      hovertemplate: "%{text}",  
     };
   
     var layout = {
-      title: 'Number of Deaths by Cause',
+      title: "Number of Deaths by Cause",
       xaxis: {
-        title: 'Cause Name'
+        title: "Cause Name"
       },
       yaxis: {
-        title: 'Number of Deaths'
+        title: "Number of Deaths"
       }
     };
   
