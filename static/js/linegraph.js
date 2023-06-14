@@ -1,101 +1,84 @@
-fetch('resources/output.json')
-  .then(response => response.json())
-  .then(data => {
-    const parsedData = data;
-    const states = [...new Set(parsedData.map(entry => entry.STATE))];
-    const causes = [...new Set(parsedData.map(entry => entry.CAUSE_NAME))];
-    const years = [...new Set(parsedData.map(entry => entry.YEAR))];
-    const deaths = [...new Set(parsedData.map(entry => entry.DEATHS))];
-    const chartData = {};
+d3.json('resources/output.json').then(function(data) {
+  var states = [...new Set(data.map(item => item.STATE))];
+  var causes = [...new Set(data.map(item => item.CAUSE_NAME))];
 
-    const stateSelect = document.getElementById('state-select');
-    const causeSelect = document.getElementById('cause-select');
-  
-    // Populate State dropdown menu
-    states.forEach(state => {
-      const option = document.createElement('option');
-      option.value = state;
-      option.text = state;
-      stateSelect.appendChild(option);
-    });
-
-    // Populate Cause dropdown menu
-    causes.forEach(cause => {
-      const option = document.createElement('option');
-      option.value = cause;
-      option.text = cause;
-      causeSelect.appendChild(option);
-    });
-
-    const canvas = document.getElementById('chart-canvas');
-    const ctx = canvas.getContext('2d');
-
-    const chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: years, 
-        datasets: []
-       
-      },
-      options: {
-        responsive: true,
-        scales: {
-          x: {
-            display: true,
-            title: {
-              display: true,
-              text: 'Year'
-            }
-          },
-          y: {
-            display: true,
-            title: {
-              display: true,
-              text: 'Deaths'
-            }
-          }
-        }
-      }
-    });
-
-    // Event listeners for dropdown changes
-    stateSelect.addEventListener('change', function() {
-      const selectedState = stateSelect.value;
-      updateChartData(selectedState, chartData, causeSelect.value);
-      updateChart(chartData, chart);
-    });
-
-    causeSelect.addEventListener('change', function() {
-      const selectedCause = causeSelect.value;
-      updateChartData(stateSelect.value, chartData, selectedCause);
-      updateChart(chartData, chart);
-    });
-
-    function updateChartData(selectedState, chartData, selectedCause) {
-      chartData.datasets = [];
-      years.forEach(year => {
-        const filteredData = parsedData.filter(entry => entry.state === selectedState && entry.CAUSE_NAME === selectedCause && entry.year === year);
-        const totalDeaths = filteredData.reduce((acc, entry) => acc + entry.deaths, 0);
-        chartData.datasets.push({ year, deaths: totalDeaths });
-      });
-    }
-
-    function updateChart(chartData, chart) {
-      const chartLabels = chartData.datasets.map(dataset => dataset.year);
-      const chartDeaths = chartData.datasets.map(dataset => dataset.deaths);
-
-      chart.data.labels = chartLabels;
-      chart.data.datasets[0] = {
-        label: 'Cause of Death Overtime for Each State',
-        data: chartDeaths,
-        borderColor: 'blue',
-        fill: false
-      };
-      // Set y-axis title dynamically based on selected cause
-      chart.options.scales.y.title.text = causeSelect.value;
-      chart.update();
-    }
-
-    chart.update();
+  var stateDropdown = d3.select('#stateDropdown');
+  states.forEach(function(state) {
+    stateDropdown.append('option').attr('value', state).text(state);
   });
+
+  var causeDropdown = d3.select('#causeDropdown');
+  causes.forEach(function(cause) {
+    causeDropdown.append('option').attr('value', cause).text(cause);
+  });
+
+  stateDropdown.on('change', updateChart);
+  causeDropdown.on('change', updateChart);
+
+  // Initialize the chart
+  updateChart();
+});
+
+function updateChart() {
+  var selectedState = d3.select('#stateDropdown').property('value');
+  var selectedCause = d3.select('#causeDropdown').property('value');
+
+  d3.json('resources/output.json').then(function(data) {
+    var filteredData = data.filter(function(item) {
+      return item.STATE === selectedState && item.CAUSE_NAME === selectedCause;
+    });
+
+    var years = filteredData.map(item => item.YEAR);
+    var deaths = filteredData.map(item => parseInt(item.DEATHS));
+
+    var chartContainer = d3.select('#chartContainer');
+    chartContainer.html('');
+
+    var svg = chartContainer.append('svg')
+      .attr('width', 500)
+      .attr('height', 300);
+
+    var margin = { top: 20, right: 20, bottom: 30, left: 50 };
+    var width = +svg.attr('width') - margin.left - margin.right;
+    var height = +svg.attr('height') - margin.top - margin.bottom;
+
+    var xScale = d3.scaleBand()
+      .domain(years)
+      .range([0, width])
+      .padding(0.1);
+
+    var yScale = d3.scaleLinear()
+      .domain([0, d3.max(deaths)])
+      .range([height, 0]);
+
+    var xAxis = d3.axisBottom(xScale);
+    var yAxis = d3.axisLeft(yScale);
+
+    var chartGroup = svg.append('g')
+      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+    chartGroup.append('g')
+      .attr('class', 'x-axis')
+      .attr('transform', 'translate(0,' + height + ')')
+      .call(xAxis);
+
+    chartGroup.append('g')
+      .attr('class', 'y-axis')
+      .call(yAxis);
+
+    var line = d3.line()
+      .x(function(d) { return xScale(d.YEAR) + xScale.bandwidth() / 2; })
+      .y(function(d) { return yScale(d.DEATHS); });
+
+    chartGroup.append('path')
+      .datum(filteredData)
+      .attr('fill', 'none')
+      .attr('stroke', 'steelblue')
+      .attr('stroke-width', 2)
+      .attr('d', line);
+  });
+}
+
+// Call the updateChart function when the page loads
+updateChart();
    

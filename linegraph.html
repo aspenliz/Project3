@@ -1,21 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Line Graph Example</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <title>Deaths by Cause and State OverTime</title>
+  "<script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
-  <div>
-    <label for="state-select">State:</label>
-    <select id="state-select"></select>
-  </div>
 
   <div>
-    <label for="cause-select">Cause:</label>
-    <select id="cause-select"></select>
+    <select id="stateDropdown"></select>
+    <select id="causeDropdown"></select>
   </div>
-
-  <canvas id="chart-canvas"></canvas>
+  <div id="chartContainer"></div>
+  
 
   <script src="static\js\linegraph.js"></script>
 </body>
