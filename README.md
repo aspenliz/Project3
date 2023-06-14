@@ -1,4 +1,5 @@
 # Project3
+
 To Begin, we selected our topic by finding data that relates to leading causes of death in the United States and merging it into one csv file.
 
 the index.html file includes Leaflet Javascript code, Leaflet CSS and openlayers js library etc.
@@ -22,3 +23,14 @@ Tools used in this project:
 The data story is easy to interpret for users of all levels.
 
 Finally, created a web application, featuring maps, plots, and a dropdown menu.
+
+# Acknowledgements
+
+Data was taken from the Centers of Disease Control, at the following address: https://www.cdc.gov/nchs/data-visualization/mortality-leading-causes/index.htm .
+
+# Authors
+
+Daniel Adamson
+Aspen Simpson
+Noor Zaki
+Kaitlynn Nguyen
