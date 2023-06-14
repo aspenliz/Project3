@@ -38,11 +38,11 @@ function updateChart() {
     chartContainer.html('');
 
     var svg = chartContainer.append('svg')
-      .attr('width', 500)
+      .attr('width', 700)
       .attr('height', 300);
 
     //set up location of linegraph
-    var margin = { top: 20, right: 20, bottom: 30, left: 50 };
+    var margin = { top: 60, right: 60, bottom: 70, left: 90 };
     var width = +svg.attr('width') - margin.left - margin.right;
     var height = +svg.attr('height') - margin.top - margin.bottom;
 
