@@ -31,6 +31,9 @@ Data was taken from the Centers of Disease Control, at the following address: ht
 # Authors
 
 Daniel Adamson
+
 Aspen Simpson
+
 Noor Zaki
+
 Kaitlynn Nguyen
