@@ -12,17 +12,25 @@ Leaflet and Plotly charts built from data gathered through web scraping.
 A dashboard page with multiple charts that all reference the same data.
 
 Tools used in this project: 
-- JavaScript and libraries like Leaflet and Plotly;
+- JavaScript and libraries like Leaflet, Plotly, and Chart.js;
 - Google Chrome DevTools;
 - HTML;
 - Python Flask;
-- SQL;
-- Bootstrap.
-
+- SQL.
 
 The data story is easy to interpret for users of all levels.
 
 Finally, created a web application, featuring maps, plots, and a dropdown menu.
+
+# Instructions
+
+The interactive map is available through the index.html page, and its code is included in app.js.
+
+The interactive bar chart is included in barChart.html, and barChart.js acts as a source for its content.
+
+The interactive line graph is included in linegraph.html, with linegraph.js as a source.
+
+CORS errors may be an issue for some users, but extensions like Live Server in VSCode and the use of local servers may be helpful to avert those issues.
 
 # Acknowledgements
 
